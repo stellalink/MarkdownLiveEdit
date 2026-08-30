@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#111b31" />
+    <meta name="application-name" content="MarkdownLiveEdit" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="MarkdownLiveEdit" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' data:; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https:; connect-src https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com; worker-src 'self'; object-src 'none'; base-uri 'none'"
+    />
+    <!-- Google tag (gtag.js) -->
+    <script src="./analytics.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3MLFE0ZZZ0"></script>
+    <meta
+      name="description"
+      content="MarkdownLiveEditは、保存や登録なしで使えるリアルタイムプレビュー対応のオンラインMarkdownエディタです。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MarkdownLiveEdit - リアルタイムプレビュー対応のオンラインMarkdownエディタ" />
+    <meta property="og:description" content="MarkdownLiveEditは、保存や登録なしで使えるリアルタイムプレビュー対応のオンラインMarkdownエディタです。" />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:alt" content="MarkdownLiveEditのMarkdown入力・プレビュー画面" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MarkdownLiveEdit - リアルタイムプレビュー対応のオンラインMarkdownエディタ" />
+    <meta name="twitter:description" content="MarkdownLiveEditは、保存や登録なしで使えるリアルタイムプレビュー対応のオンラインMarkdownエディタです。" />
+    <meta name="twitter:image" content="/og.png" />
+    <meta name="twitter:image:alt" content="MarkdownLiveEditのMarkdown入力・プレビュー画面" />
+    <title>MarkdownLiveEdit - リアルタイムプレビュー対応のオンラインMarkdownエディタ</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./vendor/purify.min.js" defer></script>
+    <script src="./vendor/marked.umd.js" defer></script>
+    <script src="./vendor/katex/katex.min.js" defer></script>
+    <script src="./vendor/katex/contrib/auto-render.min.js" defer></script>
+    <script src="./markdown-extensions.js" defer></script>
+    <script src="./pwa.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#markdown-input">エディタへ移動</a>
+
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="brand" aria-label="MarkdownLiveEdit">
+          <span class="brand-mark" aria-hidden="true">M<span>↓</span></span>
+          <div>
+            <h1>MarkdownLiveEdit - リアルタイムプレビュー対応のオンラインMarkdownエディタ</h1>
+            <p>書いた瞬間、かたちになる。</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <p class="privacy-note"><span aria-hidden="true">●</span> 入力本文は保存・送信しません · 外部画像は既定で遮断</p>
+          <button
+            class="icon-button"
+            id="tutorial-help"
+            type="button"
+            aria-label="使い方とデータの取扱いを表示"
+            title="使い方とデータの取扱い"
+          >
+            <span aria-hidden="true">?</span>
+          </button>
+          <a
+            class="support-link"
+            href="./donate.html"
+            aria-label="MarkdownLiveEditへの寄付について"
+            title="寄付について"
+          >
+            <span aria-hidden="true">♡</span><span class="button-label">寄付</span>
+          </a>
+          <button class="quiet-button" id="shortcut-help" type="button">
+            <span aria-hidden="true">⌨</span><span class="button-label">ショートカット</span>
+          </button>
+          <button
+            class="icon-button"
+            id="theme-toggle"
+            type="button"
+            aria-pressed="false"
+            aria-label="ダークモードに切り替え"
+            title="表示テーマを切り替え"
+          >
+            <span aria-hidden="true">◐</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="app-main" id="main-content">
+        <div class="workspace" aria-label="Markdown編集ワークスペース">
+          <section class="pane editor-pane" aria-labelledby="editor-title">
+            <div class="pane-header">
+              <div class="pane-heading">
+                <span class="pane-dot editor-dot" aria-hidden="true"></span>
+                <h2 id="editor-title">Markdown</h2>
+              </div>
+              <div class="pane-actions">
+                <button
+                  class="copy-button pane-tool-button"
+                  id="editor-search-toggle"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls="search-panel"
+                  aria-label="検索と置換を開く"
+                  title="検索と置換 (Ctrl/⌘+H)"
+                >
+                  <svg class="copy-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                    <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                    <path d="m15.5 15.5 4.5 4.5"></path>
+                  </svg>
+                  <span class="button-label">検索・置換</span>
+                </button>
+                <button
+                  class="copy-button pane-tool-button format-hint-toggle"
+                  id="format-toolbar-toggle"
+                  type="button"
+                  aria-pressed="false"
+                  aria-controls="format-toolbar"
+                  aria-label="書式ヒントを表示する"
+                  title="書式ヒントの表示を切り替える (Ctrl/⌘+Shift+H)"
+                >
+                  <span class="format-hint-icon" aria-hidden="true">Aa</span>
+                  <span class="button-label">書式ヒント</span>
+                </button>
+                <button class="copy-button" id="copy-markdown" type="button">
+                  <svg class="copy-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                    <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+                    <path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"></path>
+                  </svg>
+                  <span class="button-label">Markdownをコピー</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="format-toolbar" id="format-toolbar" role="toolbar" aria-label="Markdown書式ヒント" hidden>
+              <button type="button" data-format="heading" aria-label="見出し2を切り替える" title="見出し2" aria-pressed="false">H2</button>
+              <button type="button" data-format="bold" aria-label="太字を切り替える（Control B）" title="太字 (Ctrl+B)" aria-pressed="false"><strong>B</strong></button>
+              <button type="button" data-format="italic" aria-label="斜体を切り替える（Control I）" title="斜体 (Ctrl+I)" aria-pressed="false"><em>I</em></button>
+              <button type="button" data-format="strike" aria-label="取り消し線を切り替える" title="取り消し線" aria-pressed="false"><s>S</s></button>
+              <span class="toolbar-separator" aria-hidden="true"></span>
+              <button type="button" data-format="link" aria-label="リンクを切り替える（Control K）" title="リンク (Ctrl+K)" aria-pressed="false">↗</button>
+              <button type="button" data-format="quote" aria-label="引用を切り替える" title="引用" aria-pressed="false">❯</button>
+              <button type="button" data-format="code" aria-label="インラインコードを切り替える" title="インラインコード" aria-pressed="false">&lt;/&gt;</button>
+              <button type="button" data-format="codeblock" aria-label="コードブロックを切り替える" title="コードブロック" aria-pressed="false">⌗</button>
+              <button type="button" data-format="list" aria-label="箇条書きを切り替える" title="箇条書き" aria-pressed="false">≡</button>
+              <button type="button" data-format="check" aria-label="チェック項目を切り替える" title="チェック項目" aria-pressed="false">☑</button>
+              <span class="toolbar-separator" aria-hidden="true"></span>
+              <button id="move-line-up" type="button" aria-label="選択行を上へ移動" title="行を上へ移動 (Alt+↑)">↑</button>
+              <button id="move-line-down" type="button" aria-label="選択行を下へ移動" title="行を下へ移動 (Alt+↓)">↓</button>
+              <button id="duplicate-line" type="button" aria-label="選択行を複製" title="行を複製 (Shift+Alt+↓)">＋</button>
+              <span class="toolbar-spacer"></span>
+              <button
+                class="sync-button is-active"
+                id="sync-scroll"
+                type="button"
+                aria-pressed="true"
+                aria-label="プレビューとのスクロール同期を解除"
+                title="スクロール同期"
+              >
+                <span aria-hidden="true">⇅</span><span class="button-label">同期</span>
+              </button>
+            </div>
+
+            <div class="editor-shell">
+              <div class="line-numbers" aria-hidden="true">
+                <div id="line-number-content"></div>
+              </div>
+              <textarea
+                id="markdown-input"
+                aria-label="Markdown入力"
+                aria-describedby="editor-help validation-announcement"
+                autocomplete="off"
+                autocapitalize="sentences"
+                spellcheck="false"
+                wrap="off"
+              ></textarea>
+
+              <div class="search-panel" id="search-panel" hidden role="search" aria-label="エディタ内検索">
+                <div class="search-row">
+                  <label class="sr-only" for="search-input">検索する文字</label>
+                  <input id="search-input" type="text" autocomplete="off" placeholder="検索" />
+                  <output id="search-count" aria-live="polite">0 / 0</output>
+                  <button id="find-previous" type="button" aria-label="前を検索" title="前を検索 (Shift+Enter)">↑</button>
+                  <button id="find-next" type="button" aria-label="次を検索" title="次を検索 (Enter)">↓</button>
+                  <button id="close-search" type="button" aria-label="検索を閉じる" title="閉じる (Escape)">×</button>
+                </div>
+                <div class="replace-row" id="replace-row" hidden>
+                  <label class="sr-only" for="replace-input">置換後の文字</label>
+                  <input id="replace-input" type="text" autocomplete="off" placeholder="置換" />
+                  <button id="replace-one" type="button">置換</button>
+                  <button id="replace-all" type="button">すべて</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="status-bar" aria-label="エディタの状態">
+              <span id="cursor-status">行 1、列 1</span>
+              <span id="document-status">0行 · 0文字</span>
+              <a class="mobile-jump" href="#preview-title">プレビューへ移動</a>
+              <button id="validation-status" type="button" aria-controls="problems-panel">
+                <span aria-hidden="true">✓</span> 修正候補なし
+              </button>
+            </div>
+            <p class="sr-only" id="editor-help">Tabで字下げ、ControlまたはCommand Fで検索、ControlまたはCommand Hで置換、ControlまたはCommand Shift Hで書式ヒントを切り替えます。Altと上下矢印で行移動、Shift Alt 下矢印で行複製ができます。エディタから移動するには、Escapeを押してからTabまたはShift Tabを押します。検索と置換、書式ヒント、行操作は画面上のボタンからも操作できます。</p>
+          </section>
+
+          <section class="pane preview-pane" aria-labelledby="preview-title">
+            <div class="pane-header">
+              <div class="pane-heading">
+                <span class="pane-dot preview-dot" aria-hidden="true"></span>
+                <h2 id="preview-title">プレビュー</h2>
+                <span class="live-label"><span aria-hidden="true"></span>リアルタイム</span>
+              </div>
+              <button class="copy-button" id="copy-html" type="button">
+                <svg class="copy-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+                  <path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"></path>
+                </svg>
+                <span class="button-label">HTMLをコピー</span>
+              </button>
+            </div>
+            <div class="preview-scroll" id="preview-scroll">
+              <article id="markdown-preview" class="markdown-body" aria-label="Markdownプレビュー" tabindex="0"></article>
+            </div>
+            <div class="preview-footer">
+              <div class="preview-security">
+                <span><span aria-hidden="true">◇</span> 安全化したHTMLのみ表示</span>
+                <button
+                  id="remote-images-toggle"
+                  class="privacy-control"
+                  type="button"
+                  aria-pressed="false"
+                  aria-label="外部画像の読み込みを許可"
+                >外部画像：遮断中</button>
+              </div>
+              <a class="mobile-jump" href="#markdown-input">編集へ戻る</a>
+              <span id="render-time">更新済み</span>
+            </div>
+          </section>
+        </div>
+
+        <details class="problems" id="problems-panel" aria-describedby="check-note">
+          <summary>
+            <span><span class="problem-icon" aria-hidden="true">!</span> Markdown簡易チェック</span>
+            <span class="problem-summary" id="problem-summary">修正候補はありません</span>
+          </summary>
+          <div class="problem-list" id="problem-list" role="list"></div>
+          <p class="sr-only" id="check-note">Markdownのすべての仕様を検証するものではなく、よくある入力間違いとアクセシビリティ上の注意を示します。</p>
+        </details>
+      </main>
+
+      <footer class="site-legal-footer" aria-label="サイト情報">
+        <span>&copy; 2026 Stellalink, Inc.</span>
+        <!-- <a href="./terms.html">利用規約</a> -->
+      </footer>
+    </div>
+
+    <dialog id="onboarding-dialog" aria-labelledby="onboarding-title" aria-describedby="onboarding-summary">
+      <div class="onboarding-card">
+        <header class="onboarding-header">
+          <div>
+            <p class="eyebrow">はじめに</p>
+            <h2 id="onboarding-title" tabindex="-1">MarkdownLiveEditへようこそ</h2>
+            <p id="onboarding-summary">安心して使うためのデータ取扱いと、基本操作を3つの画面でご案内します。</p>
+          </div>
+          <button class="dialog-close" id="onboarding-skip" type="button" aria-label="案内を終了する">×</button>
+        </header>
+
+        <div class="onboarding-content">
+          <section class="onboarding-step" data-onboarding-step="0" aria-labelledby="onboarding-step-privacy">
+            <p class="onboarding-kicker">データの取扱い</p>
+            <h3 id="onboarding-step-privacy" tabindex="-1">入力内容は端末内で処理します</h3>
+            <ul class="onboarding-list">
+              <li>本ツールは外部送信を原則として行わず、通常のページ配信、Google Analyticsによる利用状況計測、利用者が許可した外部画像の読み込みに限定します。</li>
+              <li>入力したMarkdown本文は外部へ送信しません。</li>
+              <li>入力本文をサーバー、データベース、Cookie、localStorageへ保存しません。</li>
+              <li>Google Analyticsにより、閲覧ページ、参照元、端末・ブラウザ情報、IPアドレス等がGoogleへ送信される場合があります。</li>
+              <li>外部画像は初期状態で遮断し、利用者が許可した場合だけ読み込みます。</li>
+            </ul>
+            <p class="onboarding-storage-note"><strong>端末に保存する情報：</strong>本ツールが利用者に関して直接保存するのは、この案内の表示済み状態、書式ヒントの最終表示状態、選択した表示テーマです。PWA機能はオフライン起動用の公開アプリ資産のみをCache Storageに保存し、入力本文は含みません。Google AnalyticsはCookie等を使用する場合がありますが、入力本文は含みません。</p>
+          </section>
+
+          <section class="onboarding-step" data-onboarding-step="1" aria-labelledby="onboarding-step-edit" hidden>
+            <p class="onboarding-kicker">基本操作 1</p>
+            <h3 id="onboarding-step-edit" tabindex="-1">書くと、すぐにプレビューされます</h3>
+            <ol class="onboarding-numbered-list">
+              <li><strong>Markdown欄</strong>に文章や記法を入力します。</li>
+              <li><strong>プレビュー欄</strong>へ表示結果がリアルタイムに反映されます。</li>
+              <li>スマートフォンでは編集欄とプレビュー欄が上下に並びます。</li>
+            </ol>
+            <p class="onboarding-tip">書式ヒントは初期状態では非表示です。Markdown入力欄で <kbd>Ctrl / ⌘ + Shift + H</kbd> を押すか、Markdown欄上部の「書式ヒント」ボタンで表示・非表示を切り替えられます。最終状態はこの端末に保存されます。</p>
+          </section>
+
+          <section class="onboarding-step" data-onboarding-step="2" aria-labelledby="onboarding-step-finish" hidden>
+            <p class="onboarding-kicker">基本操作 2</p>
+            <h3 id="onboarding-step-finish" tabindex="-1">確認して、コピーして保存します</h3>
+            <ul class="onboarding-list">
+              <li>記法の問題やアクセシビリティ上の注意は、Markdown簡易チェックに表示されます。</li>
+              <li>Markdownまたは安全化したHTMLをコピーし、任意の場所へ保存できます。</li>
+              <li>本ツールには保存機能がないため、ページを閉じる前に必要な内容をコピーしてください。</li>
+              <li>対応ブラウザでは、「ホーム画面に追加」または「アプリをインストール」から、本ツールをアプリとして利用できます。</li>
+            </ul>
+            <p class="onboarding-tip">この案内は、ヘッダーの「?」ボタンからいつでも再表示できます。</p>
+          </section>
+        </div>
+
+        <footer class="onboarding-footer">
+          <p class="onboarding-progress" id="onboarding-progress" aria-live="polite">1 / 3</p>
+          <div class="onboarding-actions">
+            <button class="tutorial-secondary" id="onboarding-back" type="button" disabled>戻る</button>
+            <button class="tutorial-primary" id="onboarding-next" type="button">次へ</button>
+          </div>
+        </footer>
+      </div>
+    </dialog>
+
+    <dialog id="shortcut-dialog" aria-labelledby="shortcut-title">
+      <form method="dialog" class="dialog-card">
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">KEYBOARD FIRST</p>
+            <h2 id="shortcut-title">キーボードショートカット</h2>
+          </div>
+          <button class="dialog-close" value="close" aria-label="閉じる">×</button>
+        </div>
+        <div class="shortcut-grid">
+          <span>検索</span><kbd>Ctrl / ⌘</kbd><span>+</span><kbd>F</kbd>
+          <span>置換</span><kbd>Ctrl / ⌘</kbd><span>+</span><kbd>H</kbd>
+          <span>太字</span><kbd>Ctrl / ⌘</kbd><span>+</span><kbd>B</kbd>
+          <span>斜体</span><kbd>Ctrl / ⌘</kbd><span>+</span><kbd>I</kbd>
+          <span>リンク</span><kbd>Ctrl / ⌘</kbd><span>+</span><kbd>K</kbd>
+          <span>コメント</span><kbd>Ctrl / ⌘</kbd><span>+</span><kbd>/</kbd>
+          <span>書式ヒント</span><kbd>Ctrl / ⌘ + Shift</kbd><span>+</span><kbd>H</kbd>
+          <span>行を移動</span><kbd>Alt</kbd><span>+</span><kbd>↑ / ↓</kbd>
+          <span>行を複製</span><kbd>Shift + Alt</kbd><span>+</span><kbd>↓</kbd>
+          <span>字下げ</span><kbd>Tab</kbd><span></span><span></span>
+          <span>エディタから移動</span><kbd>Esc</kbd><span>→</span><kbd>Tab</kbd>
+        </div>
+        <p class="dialog-note">検索・置換、書式ヒント、行移動、行複製は画面上のボタンからも操作できます。</p>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+    <div class="sr-only" id="validation-announcement" aria-live="polite" aria-atomic="true"></div>
+    <noscript>このアプリを利用するにはJavaScriptを有効にしてください。</noscript>
+  </body>
+</html>

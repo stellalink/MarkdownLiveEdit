@@ -1,0 +1,28 @@
+{
+  "id": "./index.html",
+  "name": "MarkdownLiveEdit - リアルタイムMarkdownエディタ",
+  "short_name": "MarkdownLiveEdit",
+  "description": "保存や登録なしで使える、リアルタイムプレビュー対応のMarkdownエディタです。",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#111b31",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "prefer_related_applications": false
+}
