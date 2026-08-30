@@ -6,7 +6,8 @@
 
 `index.html` をブラウザで開くだけで利用できます。
 
-設置予定URLは `https://markdownliveedit.appx.jp/` です。ConoHa WINGで公開する際は、プロジェクトルートの公開ファイルと `icons/`、`vendor/` を対象サブドメインの公開ディレクトリへ配置します。`.project/` と `.git/` は開発・管理用のため配置しません。HTTPSへの転送はConoHa WINGの独自SSL機能に任せます。
+設置URLは `https://markdownliveedit.appx.jp/` です。
+公開対象のファイルは、プロジェクトルートの公開ファイルと `icons/`、`vendor/` を対象サブドメインの公開ディレクトリへ配置します。
 
 ## 主な機能
 
